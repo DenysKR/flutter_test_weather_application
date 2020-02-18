@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/model/Weather.dart';
 
 class CurrentWeather extends StatelessWidget {
+
   final _paddingValue = 30.0;
+  final Weather weatherData;
+
+  const CurrentWeather({Key key, @required this.weatherData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -17,8 +22,8 @@ class CurrentWeather extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network('https://openweathermap.org/img/w/04d.png'),
-                  Text('2°C',
+                  Image.network('https://openweathermap.org/img/w/${weatherData.icon}.png'),
+                  Text(weatherData.temperature.toString(),
                       style: new TextStyle(
                           fontSize: 52.0, fontWeight: FontWeight.bold)),
                 ],

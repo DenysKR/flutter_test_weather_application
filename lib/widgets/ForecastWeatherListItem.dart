@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/model/Weather.dart';
+import 'package:intl/intl.dart';
 
 class ForecastWeatherListItem extends StatelessWidget {
+  final Weather weatherData;
+
+  const ForecastWeatherListItem({Key key, @required this.weatherData}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Card(
         margin: const EdgeInsets.all(8.0),
@@ -9,10 +15,10 @@ class ForecastWeatherListItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Fabruary 18, 2020'),
-              Text('11:30'),
-              Image.network('https://openweathermap.org/img/w/04d.png'),
-              Text('2°C'),
+              Text(new DateFormat.yMMMd().format(weatherData.date)),
+              Text(new DateFormat.Hm().format(weatherData.date)),
+              Image.network('https://openweathermap.org/img/w/${weatherData.icon}.png'),
+              Text(weatherData.temperature.toString()),
             ],
           ),
         ),
