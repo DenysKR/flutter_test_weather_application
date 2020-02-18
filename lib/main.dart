@@ -65,21 +65,15 @@ class MyApp extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text('Kharkiv',
-                                      style:
-                                          new TextStyle(color: Colors.white)),
-                                  Text('Sunny',
-                                      style: new TextStyle(
-                                          color: Colors.white, fontSize: 32.0)),
-                                  Text('2°C',
-                                      style:
-                                          new TextStyle(color: Colors.white)),
-                                  Image.network(
-                                      'https://openweathermap.org/img/w/04d.png'),
                                   Text('Fabruary 18, 2020',
                                       style:
                                           new TextStyle(color: Colors.white)),
                                   Text('11:30',
+                                      style:
+                                          new TextStyle(color: Colors.white)),
+                                  Image.network(
+                                      'https://openweathermap.org/img/w/04d.png'),
+                                  Text('2°C',
                                       style:
                                           new TextStyle(color: Colors.white)),
                                 ],
