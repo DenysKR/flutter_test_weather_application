@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather/weather.dart';
 import 'package:weather_app/model/FormattedWeatherEntity.dart';
 
 class CurrentWeather extends StatelessWidget {

@@ -13,11 +13,9 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  FormattedWeatherEntity weatherData;
+  FormattedWeatherEntity currentWeatherData;
 
-  List<FormattedWeatherEntity> forecastData;
-
-  bool isLoading = false;
+  List<FormattedWeatherEntity> forecastsData;
 
   @override
   void initState() {
@@ -42,21 +40,21 @@ class MyAppState extends State<MyApp> {
             ),
             body: Center(
                 child: Column(children: <Widget>[
-              weatherData != null
-                  ? CurrentWeather(weather: weatherData)
+              currentWeatherData != null
+                  ? CurrentWeather(weather: currentWeatherData)
                   : Container(),
               SafeArea(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   height: 150.0,
-                  child: forecastData != null
+                  child: forecastsData != null
                       ? ListView.builder(
-                          itemCount: forecastData.length,
+                          itemCount: forecastsData.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) =>
                               ForecastWeatherListItem(
-                                  weather: forecastData.elementAt(index)))
+                                  weather: forecastsData.elementAt(index)))
                       : Container(),
                 ),
               ))
@@ -64,19 +62,17 @@ class MyAppState extends State<MyApp> {
       );
 
   loadWeather() async {
-    WeatherStation weatherStation =
-        new WeatherStation("d0ebde681bc5b0725f20d3923f19273f");
+    final appId = 'd0ebde681bc5b0725f20d3923f19273f';
+    WeatherStation weatherStation = new WeatherStation(appId);
     var weather = await weatherStation.currentWeather();
-    var forecasts = await weatherStation
-        .fiveDayForecast();
+    var forecasts = await weatherStation.fiveDayForecast();
 
-    forecasts.map((weather) =>
-        FormattedWeatherEntity(weather));
+    forecasts.map((weather) => FormattedWeatherEntity(weather));
 
     setState(() {
-      weatherData = new FormattedWeatherEntity(weather);
-      forecastData = forecasts.map((weather) =>
-          FormattedWeatherEntity(weather)).toList();
+      currentWeatherData = new FormattedWeatherEntity(weather);
+      forecastsData =
+          forecasts.map((weather) => FormattedWeatherEntity(weather)).toList();
     });
   }
 }
