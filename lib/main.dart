@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
-import 'package:weather_app/model/Forecast.dart';
-import 'package:weather_app/model/Weather.dart';
+
+import 'package:weather/weather.dart';
+import 'package:weather_app/model/FormattedWeatherEntity.dart';
 import 'package:weather_app/widgets/CurrentWeather.dart';
 import 'package:weather_app/widgets/ForecastWeatherListItem.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -15,10 +13,9 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  FormattedWeatherEntity weatherData;
 
-  Weather weatherData;
-
-  Forecast forecastData;
+  List<FormattedWeatherEntity> forecastData;
 
   bool isLoading = false;
 
@@ -46,7 +43,7 @@ class MyAppState extends State<MyApp> {
             body: Center(
                 child: Column(children: <Widget>[
               weatherData != null
-                  ? CurrentWeather(weatherData: weatherData)
+                  ? CurrentWeather(weather: weatherData)
                   : Container(),
               SafeArea(
                   child: Padding(
@@ -55,12 +52,11 @@ class MyAppState extends State<MyApp> {
                   height: 150.0,
                   child: forecastData != null
                       ? ListView.builder(
-                          itemCount: forecastData.list.length,
+                          itemCount: forecastData.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) =>
                               ForecastWeatherListItem(
-                                  weatherData:
-                                      forecastData.list.elementAt(index)))
+                                  weather: forecastData.elementAt(index)))
                       : Container(),
                 ),
               ))
@@ -68,32 +64,19 @@ class MyAppState extends State<MyApp> {
       );
 
   loadWeather() async {
-    final appId = 'd0ebde681bc5b0725f20d3923f19273f';
+    WeatherStation weatherStation =
+        new WeatherStation("d0ebde681bc5b0725f20d3923f19273f");
+    var weather = await weatherStation.currentWeather();
+    var forecasts = await weatherStation
+        .fiveDayForecast();
+
+    forecasts.map((weather) =>
+        FormattedWeatherEntity(weather));
 
     setState(() {
-      isLoading = true;
-    });
-
-    final lat = 40.730610;
-    final lon = -73.935242;
-
-    final weatherResponse = await http.get(
-        'https://api.openweathermap.org/data/2.5/weather?APPID=$appId&lat=${lat.toString()}&lon=${lon.toString()}');
-    final forecastResponse = await http.get(
-        'https://api.openweathermap.org/data/2.5/forecast?APPID=$appId&lat=${lat.toString()}&lon=${lon.toString()}');
-
-    if (weatherResponse.statusCode == 200 &&
-        forecastResponse.statusCode == 200) {
-      return setState(() {
-        weatherData = new Weather.fromJson(jsonDecode(weatherResponse.body));
-        forecastData = new Forecast.fromJson(jsonDecode(forecastResponse.body));
-        isLoading = false;
-      });
-    }
-
-    setState(() {
-      isLoading = false;
+      weatherData = new FormattedWeatherEntity(weather);
+      forecastData = forecasts.map((weather) =>
+          FormattedWeatherEntity(weather)).toList();
     });
   }
 }
-

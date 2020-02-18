@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/model/Weather.dart';
-import 'package:intl/intl.dart';
+import 'package:weather_app/model/FormattedWeatherEntity.dart';
 
 class ForecastWeatherListItem extends StatelessWidget {
-  final Weather weatherData;
+  final FormattedWeatherEntity weather;
 
-  const ForecastWeatherListItem({Key key, @required this.weatherData}) : super(key: key);
+  const ForecastWeatherListItem({Key key, @required this.weather}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -15,10 +14,10 @@ class ForecastWeatherListItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(new DateFormat.yMMMd().format(weatherData.date)),
-              Text(new DateFormat.Hm().format(weatherData.date)),
-              Image.network('https://openweathermap.org/img/w/${weatherData.icon}.png'),
-              Text(weatherData.temperature.toString()),
+              Text(weather.date),
+              Text(weather.time),
+              Image.network(weather.weatherIconURL),
+              Text(weather.temperature),
             ],
           ),
         ),
