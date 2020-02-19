@@ -1,6 +1,7 @@
 import 'package:weather_app/model/FormattedWeatherEntity.dart';
 import 'package:weather_app/network_layer.dart';
 
+//TODO Add data caching logic
 class Repository {
   Repository._privateConstructor();
 

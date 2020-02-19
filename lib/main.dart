@@ -6,6 +6,8 @@ import 'package:weather_app/model/FormattedWeatherEntity.dart';
 import 'package:weather_app/widgets/CurrentWeather.dart';
 import 'package:weather_app/widgets/ForecastWeatherListItem.dart';
 
+//TODO Add weather data loading error handling mechanism
+//TODO Add weather data refreshing logic
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
