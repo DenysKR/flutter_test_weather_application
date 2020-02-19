@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:weather/weather.dart';
 import 'package:weather_app/blocs/BlocBase.dart';
+import 'package:weather_app/data_layer/Repository.dart';
 import 'package:weather_app/model/FormattedWeatherEntity.dart';
 
 class WeatherBloc implements BaseBloc {
-  FormattedWeatherEntity _currentWeather;
 
   StreamController<FormattedWeatherEntity> _currentWeatherController = StreamController<FormattedWeatherEntity>();
   StreamSink<FormattedWeatherEntity> get _currentWeatherSink => _currentWeatherController.sink;
@@ -28,13 +27,12 @@ class WeatherBloc implements BaseBloc {
   }
 
    void refreshCurrentWeather(data) async {
-    final appId = 'd0ebde681bc5b0725f20d3923f19273f';
-    WeatherStation weatherStation = new WeatherStation(appId);
-    var weather = await weatherStation.currentWeather();
-    _currentWeather = new FormattedWeatherEntity(weather);
-    _currentWeatherSink.add(_currentWeather);
+    final repository = new Repository();
 
-    var forecasts = await weatherStation.fiveDayForecast();
-    _fiveDaysForecastSink.add(forecasts.map((weather) => FormattedWeatherEntity(weather)).toList());
+    var nextFiveDaysWeatherForecast = await repository.getNextFiveDaysWeatherForecast();
+    var currentWeatherForecast = await repository.getCurrentWeatherForecast();
+
+    _currentWeatherSink.add(currentWeatherForecast);
+    _fiveDaysForecastSink.add(nextFiveDaysWeatherForecast);
   }
 }
