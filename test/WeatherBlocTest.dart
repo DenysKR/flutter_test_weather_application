@@ -1,5 +1,3 @@
-// Create a MockClient using the Mock class provided by the Mockito package.
-// Create new instances of this class in each test.
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:weather_app/blocs/CurrentWeatherBloc.dart';
@@ -21,7 +19,7 @@ main() {
       verify(mockRepository.getCurrentWeatherForecast());
     });
 
-    test('throws an exception if the http call completes with an error', () {
+    test('getNextFiveDaysWeatherForecast call completes successfully', () {
       verify(mockRepository.getNextFiveDaysWeatherForecast());
     });
   });
