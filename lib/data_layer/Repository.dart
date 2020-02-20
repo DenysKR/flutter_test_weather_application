@@ -3,21 +3,21 @@ import 'package:weather_app/network_layer.dart';
 
 //TODO Add data caching logic
 class Repository {
-  Repository._privateConstructor();
+  WeatherService _weatherService;
 
-  static final Repository _instance = Repository._privateConstructor();
-
-  factory Repository() {
-    return _instance;
+  Repository(WeatherService weatherService) {
+    this._weatherService = weatherService;
   }
 
   getCurrentWeatherForecast() async {
-    var weather = await new WeatherService().getCurrentWeatherForecast();
+    var weather = await _weatherService.getCurrentWeatherForecast();
     return new FormattedWeatherEntity(weather);
   }
 
   getNextFiveDaysWeatherForecast() async {
-    var forecasts = await new WeatherService().getNextFiveDaysWeatherForecast();
-    return forecasts.map((weather) => FormattedWeatherEntity(weather)).toList();
+    var forecasts = await _weatherService.getNextFiveDaysWeatherForecast();
+    return forecasts != null ? forecasts.map((weather) =>
+        FormattedWeatherEntity(weather)).toList() : new List<
+        FormattedWeatherEntity>();
   }
 }
