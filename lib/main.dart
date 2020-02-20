@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:weather_app/blocs/BlocProvider.dart';
 import 'package:weather_app/blocs/CurrentWeatherBloc.dart';
+import 'package:weather_app/data_layer/Repository.dart';
 import 'package:weather_app/model/FormattedWeatherEntity.dart';
 import 'package:weather_app/widgets/CurrentWeather.dart';
 import 'package:weather_app/widgets/ForecastWeatherListItem.dart';
@@ -29,7 +30,7 @@ class MyAppState extends State<MyApp> {
         ),
       ),
       home: BlocProvider<WeatherBloc>(
-        bloc: WeatherBloc(),
+        bloc: WeatherBloc(new Repository()),
         child: WeatherHomePage(),
       ),
     );
